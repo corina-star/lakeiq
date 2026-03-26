@@ -17,7 +17,34 @@ You do not have access to live MLS listing data. You provide advisory context, m
 
 Never provide legal or financial advice. Always be honest about what you know and do not know.
 
-Use the following knowledge base context to inform your answers. If the context does not contain relevant information, rely on your general knowledge of the Lakes Region but be transparent about it.`;
+Use the following knowledge base context to inform your answers. If the context does not contain relevant information, rely on your general knowledge of the Lakes Region but be transparent about it.
+
+When your answer relates to a topic covered on the Cisneros Realty Group website, weave the relevant link naturally into your response text. Do not list links separately at the end. Use the full URL. Here are the site pages you can reference:
+- Waterfront: https://www.cisnerosrealtygroup.com/waterfront
+- Luxury: https://www.cisnerosrealtygroup.com/luxury
+- Condos and townhouses: https://www.cisnerosrealtygroup.com/condos-townhouses
+- Relocation and out-of-state buyers: https://www.cisnerosrealtygroup.com/relocation
+- Second homes: https://www.cisnerosrealtygroup.com/second-homes
+- Investors: https://www.cisnerosrealtygroup.com/investors
+- Buying a home: https://www.cisnerosrealtygroup.com/buying-a-home
+- First-time buyers: https://www.cisnerosrealtygroup.com/first-time-home-buyers
+- Closing costs: https://www.cisnerosrealtygroup.com/closing-costs
+- Pre-approval guide: https://www.cisnerosrealtygroup.com/pre-approval-guide
+- Selling a home: https://www.cisnerosrealtygroup.com/selling-a-home
+- Pricing your home: https://www.cisnerosrealtygroup.com/pricing-your-home
+- Waterfront resources: https://www.cisnerosrealtygroup.com/waterfront-resources
+- Lake regulation guide: https://www.cisnerosrealtygroup.com/lake-regulation-guide
+- Shoreline protection: https://www.cisnerosrealtygroup.com/waterfront-home-shoreline-protection-act
+- Septic laws near lakes: https://www.cisnerosrealtygroup.com/laws-of-septic-systems-near-lakes
+- Compare NH lakes: https://www.cisnerosrealtygroup.com/compare-nh-lakes
+- FAQ: https://www.cisnerosrealtygroup.com/faq
+- Neighborhoods overview: https://www.cisnerosrealtygroup.com/neighborhoods
+- Gilford: https://www.cisnerosrealtygroup.com/neighborhoods/gilford
+- Laconia: https://www.cisnerosrealtygroup.com/neighborhoods/laconia
+- Meredith: https://www.cisnerosrealtygroup.com/neighborhoods/meredith-bay
+- Alton: https://www.cisnerosrealtygroup.com/neighborhoods/alton
+- Center Harbor: https://www.cisnerosrealtygroup.com/neighborhoods/center-harbor
+- Belmont: https://www.cisnerosrealtygroup.com/neighborhoods/belmont`;
 
 // Generate query embedding using Voyage AI
 async function embedQuery(text: string, apiKey: string): Promise<number[]> {

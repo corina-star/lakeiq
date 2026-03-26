@@ -26,8 +26,6 @@
 
   // ── Styles ─────────────────────────────────────────────────────────
   const css = `
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
     #lakeiq-widget * {
       box-sizing: border-box;
       margin: 0;
@@ -121,27 +119,28 @@
 
     /* ── Header ── */
     #lakeiq-header {
-      background: #3D3D3D;
-      color: #FFFFFF;
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      background: #3D3D3D !important;
+      color: #FFFFFF !important;
+      padding: 16px 20px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
       flex-shrink: 0;
     }
 
     #lakeiq-header-title {
-      font-size: 15px;
-      font-weight: 700;
+      font-size: 15px !important;
+      font-weight: 700 !important;
       letter-spacing: 0.5px;
+      color: #B19A55 !important;
     }
 
     #lakeiq-header-beta {
-      font-size: 10px;
-      font-weight: 600;
-      background: #B19A55;
-      color: #FFFFFF;
-      padding: 2px 8px;
+      font-size: 10px !important;
+      font-weight: 600 !important;
+      background: #B19A55 !important;
+      color: #FFFFFF !important;
+      padding: 2px 8px !important;
       border-radius: 10px;
       letter-spacing: 0.5px;
     }
@@ -307,6 +306,12 @@
 
   // ── Build DOM ──────────────────────────────────────────────────────
   function init() {
+    // Load Inter font via link tag (not @import, which fails in injected styles)
+    var fontLink = document.createElement("link");
+    fontLink.rel = "stylesheet";
+    fontLink.href = "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap";
+    document.head.appendChild(fontLink);
+
     // Inject styles
     var style = document.createElement("style");
     style.textContent = css;
