@@ -7,25 +7,46 @@ const corsHeaders = {
 
 // Pages to crawl on CisnerosRealtyGroup.com
 const SITE_PAGES = [
+  // Core pages
   "https://www.cisnerosrealtygroup.com/",
-  "https://www.cisnerosrealtygroup.com/about",
-  "https://www.cisnerosrealtygroup.com/contact",
+  "https://www.cisnerosrealtygroup.com/team",
+  "https://www.cisnerosrealtygroup.com/faq",
   "https://www.cisnerosrealtygroup.com/blog",
-  "https://www.cisnerosrealtygroup.com/communities",
-  "https://www.cisnerosrealtygroup.com/communities/gilford",
-  "https://www.cisnerosrealtygroup.com/communities/laconia",
-  "https://www.cisnerosrealtygroup.com/communities/meredith",
-  "https://www.cisnerosrealtygroup.com/communities/moultonborough",
-  "https://www.cisnerosrealtygroup.com/communities/wolfeboro",
-  "https://www.cisnerosrealtygroup.com/communities/alton",
-  "https://www.cisnerosrealtygroup.com/communities/center-harbor",
-  "https://www.cisnerosrealtygroup.com/communities/tuftonboro",
-  "https://www.cisnerosrealtygroup.com/buyers",
-  "https://www.cisnerosrealtygroup.com/sellers",
+  // Buyer and seller guides
+  "https://www.cisnerosrealtygroup.com/buying-a-home",
+  "https://www.cisnerosrealtygroup.com/selling-a-home",
+  "https://www.cisnerosrealtygroup.com/first-time-home-buyers",
+  "https://www.cisnerosrealtygroup.com/closing-costs",
+  "https://www.cisnerosrealtygroup.com/pre-approval-guide",
+  "https://www.cisnerosrealtygroup.com/pricing-your-home",
+  // Specializations
   "https://www.cisnerosrealtygroup.com/waterfront",
-  "https://www.cisnerosrealtygroup.com/condos",
   "https://www.cisnerosrealtygroup.com/luxury",
   "https://www.cisnerosrealtygroup.com/relocation",
+  "https://www.cisnerosrealtygroup.com/condos-townhouses",
+  "https://www.cisnerosrealtygroup.com/second-homes",
+  "https://www.cisnerosrealtygroup.com/investors",
+  // Waterfront resources
+  "https://www.cisnerosrealtygroup.com/waterfront-resources",
+  "https://www.cisnerosrealtygroup.com/lake-regulation-guide",
+  "https://www.cisnerosrealtygroup.com/waterfront-home-shoreline-protection-act",
+  "https://www.cisnerosrealtygroup.com/laws-of-septic-systems-near-lakes",
+  "https://www.cisnerosrealtygroup.com/compare-nh-lakes",
+  // Neighborhoods (towns)
+  "https://www.cisnerosrealtygroup.com/neighborhoods",
+  "https://www.cisnerosrealtygroup.com/neighborhoods/gilford",
+  "https://www.cisnerosrealtygroup.com/neighborhoods/laconia",
+  "https://www.cisnerosrealtygroup.com/neighborhoods/meredith-bay",
+  "https://www.cisnerosrealtygroup.com/neighborhoods/bristol",
+  "https://www.cisnerosrealtygroup.com/neighborhoods/alton",
+  "https://www.cisnerosrealtygroup.com/neighborhoods/center-harbor",
+  "https://www.cisnerosrealtygroup.com/neighborhoods/belmont",
+  "https://www.cisnerosrealtygroup.com/neighborhoods/barnstead",
+  // Waterfront town pages
+  "https://www.cisnerosrealtygroup.com/gilford-nh-waterfront-homes-for-sale",
+  "https://www.cisnerosrealtygroup.com/moultonborough-waterfront-homes-for-sale",
+  "https://www.cisnerosrealtygroup.com/meredith-nh-waterfront-homes-for-sale",
+  "https://www.cisnerosrealtygroup.com/laconia-nh-waterfront-homes-for-sale",
 ];
 
 // Strip HTML tags and clean text
@@ -78,28 +99,52 @@ function chunkText(text: string, maxChars = 2000, overlap = 200): string[] {
   return chunks.filter(c => c.length > 50);
 }
 
-// Generate embeddings using Voyage AI API (voyage-3, 1024 dimensions)
-async function generateEmbedding(text: string, apiKey: string): Promise<number[]> {
-  const resp = await fetch("https://api.voyageai.com/v1/embeddings", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "voyage-3",
-      input: text.substring(0, 16000),
-      output_dimension: 1024,
-    }),
-  });
+// Delay helper
+function delay(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-  if (!resp.ok) {
+// Generate embeddings using Voyage AI API (voyage-3, 1024 dimensions)
+// Retries up to 5 times with exponential backoff on 429 rate limit errors
+async function generateEmbedding(text: string, apiKey: string): Promise<number[]> {
+  const maxRetries = 5;
+  let lastError = "";
+
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    if (attempt > 0) {
+      const waitMs = Math.min(20000 * Math.pow(2, attempt - 1), 60000);
+      console.log(`Rate limited, waiting ${waitMs / 1000}s before retry ${attempt + 1}...`);
+      await delay(waitMs);
+    }
+
+    const resp = await fetch("https://api.voyageai.com/v1/embeddings", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "voyage-3",
+        input: text.substring(0, 16000),
+        output_dimension: 1024,
+      }),
+    });
+
+    if (resp.ok) {
+      const data = await resp.json();
+      return data.data[0].embedding;
+    }
+
+    if (resp.status === 429) {
+      lastError = await resp.text();
+      continue;
+    }
+
     const err = await resp.text();
     throw new Error(`Voyage AI embedding error ${resp.status}: ${err}`);
   }
 
-  const data = await resp.json();
-  return data.data[0].embedding;
+  throw new Error(`Voyage AI rate limit exceeded after ${maxRetries} retries: ${lastError}`);
 }
 
 // Fetch a page and extract text content
