@@ -1,0 +1,11 @@
+project_id = "pvrluwgwqvrqjwkrykcw"
+
+[api]
+enabled = true
+port = 54321
+
+[db]
+port = 54322
+
+[functions.ingest-site]
+verify_jwt = false
