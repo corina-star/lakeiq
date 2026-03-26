@@ -1,0 +1,13 @@
+{
+  "name": "lakeiq",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "ingest": "node scripts/ingest-site.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.0",
+    "dotenv": "^16.4.7"
+  }
+}

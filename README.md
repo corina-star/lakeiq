@@ -9,12 +9,27 @@ Custom AI chat assistant for CisnerosRealtyGroup.com.
 1. Run the migration SQL in Supabase Dashboard > SQL Editor:
    - File: `supabase/migrations/20260326000000_setup_pgvector.sql`
 
-2. Add these secrets in Supabase Dashboard > Settings > Edge Functions > Secrets:
-   - `OPENAI_API_KEY` - for generating text embeddings (text-embedding-3-small)
+2. Copy `.env.example` to `.env` and fill in your keys:
+   ```
+   cp .env.example .env
+   ```
+   - Get your Supabase keys from Dashboard > Settings > API
+   - Add your OpenAI API key for embeddings
 
-3. Deploy the ingest-site function via Supabase Dashboard or CLI
+3. Install dependencies and run the ingestion:
+   ```
+   brew install node   # if not already installed
+   npm install
+   npm run ingest
+   ```
 
-4. Run the initial crawl:
+### Alternative: Supabase Edge Function
+
+1. Add `OPENAI_API_KEY` in Supabase Dashboard > Settings > Edge Functions > Secrets
+
+2. Deploy the ingest-site function via Supabase Dashboard or CLI
+
+3. Run the initial crawl:
    ```
    curl -X POST https://xznrlwhpstfhmxljidnj.supabase.co/functions/v1/ingest-site
    ```
