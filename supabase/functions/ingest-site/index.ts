@@ -78,23 +78,24 @@ function chunkText(text: string, maxChars = 2000, overlap = 200): string[] {
   return chunks.filter(c => c.length > 50);
 }
 
-// Generate embeddings using OpenAI API
+// Generate embeddings using Voyage AI API (voyage-3, 1024 dimensions)
 async function generateEmbedding(text: string, apiKey: string): Promise<number[]> {
-  const resp = await fetch("https://api.openai.com/v1/embeddings", {
+  const resp = await fetch("https://api.voyageai.com/v1/embeddings", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "text-embedding-3-small",
-      input: text.substring(0, 8000),
+      model: "voyage-3",
+      input: text.substring(0, 16000),
+      output_dimension: 1024,
     }),
   });
 
   if (!resp.ok) {
     const err = await resp.text();
-    throw new Error(`Embedding API error ${resp.status}: ${err}`);
+    throw new Error(`Voyage AI embedding error ${resp.status}: ${err}`);
   }
 
   const data = await resp.json();
@@ -127,11 +128,11 @@ Deno.serve(async (req) => {
   try {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
+    const VOYAGE_API_KEY = Deno.env.get("VOYAGE_API_KEY");
 
-    if (!OPENAI_API_KEY) {
+    if (!VOYAGE_API_KEY) {
       return new Response(JSON.stringify({
-        error: "OPENAI_API_KEY not configured. Add it to Supabase Edge Function secrets.",
+        error: "VOYAGE_API_KEY not configured. Add it to Supabase Edge Function secrets.",
       }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
@@ -209,7 +210,7 @@ Deno.serve(async (req) => {
 
       for (let i = 0; i < chunks.length; i++) {
         try {
-          const embedding = await generateEmbedding(chunks[i], OPENAI_API_KEY);
+          const embedding = await generateEmbedding(chunks[i], VOYAGE_API_KEY);
           const tokenEstimate = Math.ceil(chunks[i].length / 4);
 
           const { error: chunkError } = await supabase

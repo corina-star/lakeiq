@@ -7,17 +7,18 @@
 //   npm install
 //   node scripts/ingest-site.js
 //
-// Requires .env with SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY
+// Requires .env with SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, VOYAGE_API_KEY
 
 import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const VOYAGE_API_KEY = process.env.VOYAGE_API_KEY;
 
-if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !OPENAI_API_KEY) {
+if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !VOYAGE_API_KEY) {
   console.error("Missing required env vars. Check .env file.");
+  console.error("Need: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, VOYAGE_API_KEY");
   process.exit(1);
 }
 
@@ -91,22 +92,24 @@ function chunkText(text, maxChars = 2000, overlap = 200) {
   return chunks.filter((c) => c.length > 50);
 }
 
+// Generate embeddings using Voyage AI (voyage-3, 1024 dimensions)
 async function generateEmbedding(text) {
-  const resp = await fetch("https://api.openai.com/v1/embeddings", {
+  const resp = await fetch("https://api.voyageai.com/v1/embeddings", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${OPENAI_API_KEY}`,
+      Authorization: `Bearer ${VOYAGE_API_KEY}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "text-embedding-3-small",
-      input: text.substring(0, 8000),
+      model: "voyage-3",
+      input: text.substring(0, 16000),
+      output_dimension: 1024,
     }),
   });
 
   if (!resp.ok) {
     const err = await resp.text();
-    throw new Error(`Embedding API error ${resp.status}: ${err}`);
+    throw new Error(`Voyage AI embedding error ${resp.status}: ${err}`);
   }
 
   const data = await resp.json();
