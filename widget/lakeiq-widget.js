@@ -8,13 +8,13 @@
   const CHAT_ENDPOINT = SUPABASE_URL + "/functions/v1/chat";
 
   const PLACEHOLDERS = [
-    "What should I know about docks and shoreline permits before I buy?",
-    "What is the difference between lakefront and lake access?",
-    "What are the hidden costs of owning a waterfront property?",
-    "How do I know if a home in the Lakes Region is priced right?",
-    "Which Lakes Region towns are best for year-round living?",
-    "What should I look for when buying a condo in New Hampshire?",
-    "How does the buying process work when I am purchasing from out of state?",
+    "Lakefront vs. lake access. What is the real difference?",
+    "What are the hidden costs of owning a lake home?",
+    "Which Lakes Region town is right for you?",
+    "Buying from out of state. How does it work here?",
+    "Which town on Winnipesaukee should you buy in?",
+    "Winnipesaukee vs. Winnisquam. Which is right for you?",
+    "What should you know before making an offer?",
   ];
 
   // ── State ──────────────────────────────────────────────────────────
@@ -104,8 +104,9 @@
       display: none;
       width: 400px;
       max-width: calc(100vw - 48px);
-      height: 520px;
-      max-height: calc(100vh - 120px);
+      height: 600px;
+      min-height: 550px;
+      max-height: calc(100vh - 100px);
       background: #FFFFFF;
       border-radius: 16px;
       box-shadow: 0 8px 40px rgba(0,0,0,0.22);
@@ -350,9 +351,10 @@
     var chat = document.createElement("div");
     chat.id = "lakeiq-chat";
 
-    // Header
+    // Header (inline styles as fallback against host page CSS overrides)
     var header = document.createElement("div");
     header.id = "lakeiq-header";
+    header.style.cssText = "background:#3D3D3D;color:#FFFFFF;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;";
 
     var headerLeft = document.createElement("div");
     headerLeft.style.display = "flex";
@@ -362,14 +364,17 @@
     var title = document.createElement("span");
     title.id = "lakeiq-header-title";
     title.textContent = "LAKES IQ AI";
+    title.style.cssText = "color:#B19A55;font-size:15px;font-weight:700;letter-spacing:0.5px;";
 
     var beta = document.createElement("span");
     beta.id = "lakeiq-header-beta";
     beta.textContent = "BETA";
+    beta.style.cssText = "background:#B19A55;color:#FFFFFF;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;letter-spacing:0.5px;";
 
     var closeBtn = document.createElement("button");
     closeBtn.id = "lakeiq-close-btn";
     closeBtn.innerHTML = "&times;";
+    closeBtn.style.cssText = "background:none;border:none;color:#E2E3E4;font-size:22px;cursor:pointer;padding:0 0 0 12px;line-height:1;";
     closeBtn.onclick = toggleChat;
 
     headerLeft.appendChild(title);

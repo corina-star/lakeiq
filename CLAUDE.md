@@ -17,13 +17,13 @@ WIDGET IDENTITY:
 - Deploys on every page of site, home page first
 
 ROTATING PLACEHOLDER QUESTIONS:
-1. What should I know about docks and shoreline permits before I buy?
-2. What is the difference between lakefront and lake access?
-3. What are the hidden costs of owning a waterfront property?
-4. How do I know if a home in the Lakes Region is priced right?
-5. Which Lakes Region towns are best for year-round living?
-6. What should I look for when buying a condo in New Hampshire?
-7. How does the buying process work when I am purchasing from out of state?
+1. Lakefront vs. lake access. What is the real difference?
+2. What are the hidden costs of owning a lake home?
+3. Which Lakes Region town is right for you?
+4. Buying from out of state. How does it work here?
+5. Which town on Winnipesaukee should you buy in?
+6. Winnipesaukee vs. Winnisquam. Which is right for you?
+7. What should you know before making an offer?
 
 EVERY AI RESPONSE ENDS WITH:
 Ready to go deeper? Call Corina directly at 603-273-6160 for a personal conversation, or visit her YouTube channel to learn everything about the Lakes Region: https://www.youtube.com/@CisnerosRealtyGroup
