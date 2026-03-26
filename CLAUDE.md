@@ -54,7 +54,7 @@ Every response ends with: Ready to go deeper? Call Corina directly at 603-273-61
 
 Never provide legal or financial advice. Always be honest about what you know and do not know.
 
-PHASE: Phase 1 - build the Supabase vector store and site ingestion pipeline first.
+PHASE: Phase 2 - chat API and embeddable widget are built and deployed.
 
 RULES:
 Make all changes, commit, and push without asking for approval.

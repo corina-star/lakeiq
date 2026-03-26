@@ -9,3 +9,6 @@ port = 54322
 
 [functions.ingest-site]
 verify_jwt = false
+
+[functions.chat]
+verify_jwt = false
