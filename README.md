@@ -16,7 +16,7 @@ Custom AI chat assistant for CisnerosRealtyGroup.com.
 
 4. Run the initial crawl:
    ```
-   curl -X POST https://pvrluwgwqvrqjwkrykcw.supabase.co/functions/v1/ingest-site
+   curl -X POST https://xznrlwhpstfhmxljidnj.supabase.co/functions/v1/ingest-site
    ```
 
 ### Architecture

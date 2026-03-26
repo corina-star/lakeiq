@@ -37,7 +37,7 @@ BRAND PALETTE:
 - Font: Inter or Lato
 
 TECH STACK:
-- Supabase project: pvrluwgwqvrqjwkrykcw
+- Supabase project: xznrlwhpstfhmxljidnj
 - LLM: Claude Sonnet (claude-sonnet-4-6)
 - Frontend: Vanilla JavaScript widget, embeds in Luxury Presence site
 - Vector store: Supabase pgvector
